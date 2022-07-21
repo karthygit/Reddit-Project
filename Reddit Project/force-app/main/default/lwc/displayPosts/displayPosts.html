@@ -1,0 +1,35 @@
+<template>
+
+    <lightning-input label="search Post" type="text" value={keyword} onchange={handleChange}></lightning-input>
+    <lightning-button label="Search Post" onclick={handleSearch}></lightning-button>
+    <br>
+
+
+    <template for:each={postList} for:item="postItem">
+        <div key={postItem.Id} title={postItem}>
+            <lightning-card icon-name="standard:opportunity" >
+                <div class="slds-card" >
+                    <div class="slds-p-left_xx-large">
+                   <b> {postItem.Post_Title__c} </b>
+                   <br>
+                        <p> {postItem.Body__c} </p>
+                        <br>
+
+                        <a onclick={handleViewComments} data-record-id={postItem.Id} label="Comment">view all comments</a>
+
+                        <div class="slds-form-element__control">
+                            <lightning-input onchange={onCommentChange} value={postItem.commentValue} placeholder="Enter you comment here…">  </lightning-input>
+                        </div>
+
+                        <button onclick={handleSaveComment} data-record-id={postItem.Id}> save </button>
+
+                    </div>
+                </div>
+
+            </lightning-card>
+            <br>
+        </div>
+
+    </template>
+
+</template>

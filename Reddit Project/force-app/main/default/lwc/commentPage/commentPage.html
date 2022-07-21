@@ -1,0 +1,22 @@
+<template>
+
+    <p> this is the post id from lwc {postId}</p>
+    <div class="slds-card">
+        {postTitle}
+        <br>
+        {postBody}
+    </div>
+
+   
+    <template for:each={commentList} for:item="commentItem">
+        <div class="slds-card" key={commentItem.Id}> 
+            <div class="slds-card">
+                {commentItem.Body__c}
+            </div>
+            <br>
+        </div>
+
+    </template>
+    
+    
+</template>
