@@ -1,22 +1,128 @@
 <template>
+    <lightning-card  title={postTitle}>
+       <p class="slds-p-horizontal_large">{postBody}</p>
+    </lightning-card>
+<br>
+<label for="commentid">Enter your Comment here</label>
+<lightning-record-edit-form
+            object-api-name="Comment__c"
+            onsuccess={handleCommentSuccess}
+            >
 
-    <p> this is the post id from lwc {postId}</p>
-    <div class="slds-card">
-        {postTitle}
-        <br>
-        {postBody}
-    </div>
+            <lightning-input-field 
+                field-name="Body__c"
+                data-id="reset"
+                id="commentid"
+                variant="label-hidden"
+                >
+            </lightning-input-field>
+            
+              <lightning-input-field 
+                    field-name="Post__c" 
+                    value={postId}
+                    class="slds-hide">
 
-   
-    <template for:each={commentList} for:item="commentItem">
-        <div class="slds-card" key={commentItem.Id}> 
-            <div class="slds-card">
-                {commentItem.Body__c}
+               <!--  </lightning-input-field>
+                <lightning-input-field 
+                    field-name="No_of_Upvotes__c" 
+                    value=0
+                    class="slds-hide">
+
+                </lightning-input-field>
+                <lightning-input-field 
+                    field-name="No_of_Downvotes__c" 
+                    value=0
+                    class="slds-hide">--> 
+
+                </lightning-input-field>
+            
+            
+
+            <lightning-button 
+            variant="brand" 
+            type="submit" 
+            label="Save Comment">
+
+            </lightning-button>
+        </lightning-record-edit-form>
+<br>
+
+    <lightning-accordion >
+        <template for:each={commentList} for:item="commentItem" for:index="index">
+            <div key={commentItem.Id} class="slds-m-left_large" >
+                <template if:false={commentItem.Comment__c}>
+
+                
+                <lightning-card >
+                    <lightning-accordion-section name="A" label={commentItem.Body__c}>
+                        <div class="slds-p-left_small">
+                            <lightning-button variant="base" 
+                                onclick={handleVote}
+                                data-record-id={commentItem.Id}
+                                icon-name="utility:like" 
+                                class="slds-m-left_x-small"
+                                data-index={index}
+                                name="myUpVote">
+                            </lightning-button>
+                            {commentItem.No_of_Upvotes__c}<br>
+                        </div>
+                        <div class="slds-p-left_small">
+                            <lightning-button variant="base" 
+                                onclick={handleVote}
+                                data-record-id={commentItem.Id}
+                                icon-name="utility:dislike" 
+                                class="slds-m-left_x-small"
+                                data-index={index}
+                                name="myDownVote">
+                            </lightning-button>
+                            {commentItem.No_of_Downvotes__c}<br>
+                        </div>
+                        <lightning-record-edit-form
+                                object-api-name="Comment__c"
+                                onsuccess={handleCommentSuccess}
+                                >
+                                Enter your Comment here...<br>
+                                <lightning-input-field 
+                                    field-name="Body__c"
+                                    data-id="reset"
+                                    variant="label-hidden">
+                                </lightning-input-field>
+                                
+                                
+                                    <lightning-input-field 
+                                        field-name="Post__c" 
+                                        value={postId}
+                                        class="slds-hide"
+                                        >
+                                    </lightning-input-field>
+
+                                    <lightning-input-field 
+                                        field-name="Comment__c" 
+                                        value={commentItem.Id}
+                                        class="slds-hide">
+                                    </lightning-input-field>
+                                
+
+                                <lightning-button 
+                                variant="brand" 
+                                type="submit" 
+                                label="Save Comment">
+
+                                </lightning-button>
+                            </lightning-record-edit-form>
+
+                            <template if:true={commentItem.Comment__c}>
+                                {commentItem.Comment__c}
+
+                            </template>
+                    
+                    </lightning-accordion-section>
+                </lightning-card>
+            </template>
+                
             </div>
-            <br>
-        </div>
-
-    </template>
-    
+        </template>
+    </lightning-accordion>
+   
     
 </template>

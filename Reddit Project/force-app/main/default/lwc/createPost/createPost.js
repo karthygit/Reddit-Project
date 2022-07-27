@@ -8,7 +8,7 @@ import POST_SUBREDDIT_FIELD from "@salesforce/schema/Post__c.SubReddit__c"
 import POST_OBJECT from "@salesforce/schema/Post__c"
 
 export default class CreatePost extends LightningElement  {
-
+   @api subRedNameToLWC;
     @track isShowModal = false;
 
     showModalBox() {  

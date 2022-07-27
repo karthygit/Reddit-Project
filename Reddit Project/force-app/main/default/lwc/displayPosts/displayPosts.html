@@ -1,28 +1,114 @@
 <template>
-
-    <lightning-input label="search Post" type="text" value={keyword} onchange={handleChange}></lightning-input>
-    <lightning-button label="Search Post" onclick={handleSearch}></lightning-button>
+    <lightning-card>
+        <div class="slds-p-left_large"> 
+            <div class="slds-text-heading_medium">  
+                 Search your Post...
+            </div>
+            
+                <lightning-input 
+                
+                type="text" 
+                value={keyword} 
+                onchange={handleChange}
+                placeholder="Start typing here…">
+            </lightning-input>
+         
+            <br>
+            <lightning-button 
+                label="Search Post" 
+                onclick={handleSearch}
+                
+                variant="brand">
+            </lightning-button>
+        </div>
+    </lightning-card>
+    
     <br>
 
 
-    <template for:each={postList} for:item="postItem">
+    <template for:each={postList} for:item="postItem" for:index="index">
         <div key={postItem.Id} title={postItem}>
             <lightning-card icon-name="standard:opportunity" >
                 <div class="slds-card" >
                     <div class="slds-p-left_xx-large">
-                   <b> {postItem.Post_Title__c} </b>
-                   <br>
+                        <lightning-button
+                        variant="base" 
+                        onclick={handleVote}
+                        data-record-id={postItem.Id}
+                        icon-name="utility:like" 
+                        class="slds-m-left_x-small"
+                        
+                        data-index={index}
+                        name="myUpVote">
+                    </lightning-button>
+                    {postItem.No_of_Upvotes__c}
+                    <div class="slds-p-left_xx-large slds-text-heading_medium"> 
+                         <b> {postItem.Post_Title__c}  </b> 
+                        
+                    </div> 
+                   <lightning-button variant="base" 
+                        onclick={handleVote}
+                        data-record-id={postItem.Id}
+                        icon-name="utility:dislike" 
+                        class="slds-m-left_x-small"
+                        data-index={index}
+                        name="myDownVote">
+                    </lightning-button>
+                    {postItem.No_of_Downvotes__c}
+                    <br>
+                    
+                    <div class="slds-text-heading_medium slds-p-left_xx-large slds-border_left slds-border_top">
                         <p> {postItem.Body__c} </p>
+                    </div>
                         <br>
 
-                        <a onclick={handleViewComments} data-record-id={postItem.Id} label="Comment">view all comments</a>
+                        <a  onclick={handleViewComments} 
+                            data-record-id={postItem.Id} 
+                            label="Comment"
+                            data-name={postItem.Post_Title__c}
+                            data-body={postItem.Body__c}>
+                                view all comments
+                        </a>
+                        <!-- use lightingin edit form -->
+                        <br>
+                        
+                        <lightning-record-edit-form
+                            object-api-name="Comment__c"
+                            onsuccess={handleCommentSuccess}
+                            >
+                            <h3> Enter your comment here...</h3>
+                            <lightning-input-field 
+                                field-name="Body__c"
+                                data-id="reset"
+                                variant="label-hidden"
+                               >
+                            </lightning-input-field>
+                            
+                            <lightning-input-field 
+                                field-name="Post__c" 
+                                value={postItem.Id}
+                                class="slds-hide">
 
+                            </lightning-input-field>
+
+                            <lightning-button 
+                            variant="brand" 
+                            type="submit" 
+                            label="Save"
+                            data-id={postItem.Id}>
+
+                            </lightning-button>
+                        </lightning-record-edit-form>
+
+                        <!-- use lightingin edit form -->
+
+                        <!--
                         <div class="slds-form-element__control">
                             <lightning-input onchange={onCommentChange} value={postItem.commentValue} placeholder="Enter you comment here…">  </lightning-input>
                         </div>
 
-                        <button onclick={handleSaveComment} data-record-id={postItem.Id}> save </button>
-
+                        <button onclick={handleSaveComment} data-record-id={postItem.Id} data-index={index}> save </button>
+                            -->
                     </div>
                 </div>
 

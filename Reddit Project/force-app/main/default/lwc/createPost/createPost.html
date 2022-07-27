@@ -1,4 +1,15 @@
 <template>
+
+   <!--  HEader -->
+   <lightning-card> 
+      <div class="slds-text-align_center slds-text-heading_large"> 
+          <h1>  <b>  Welocme to the Discussioin {subRedNameToLWC} </b></h1>
+          
+      </div>
+   </lightning-card>
+<!--header-->
+<br>
+<div  class="slds-card slds-size_1-of-3"> <b> Create a new Post for this discussion </b></div>
     <lightning-button label="Create Post" onclick={showModalBox}></lightning-button>
  <!-- modal start -->      
  <template if:true={isShowModal}>

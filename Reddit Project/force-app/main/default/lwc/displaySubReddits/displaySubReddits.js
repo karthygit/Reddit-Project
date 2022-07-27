@@ -64,33 +64,37 @@ export default class DisplayPost extends NavigationMixin(LightningElement) {
                 componentName: "c__PostsUIPage"
             },
             state: {
-                c__SubrredId: event.target.dataset.recordId
+                c__SubrredId: event.target.dataset.recordId,
+                c__SubredName: event.target.dataset.name
             }
         });
     }
-    
-    upVoteCount = 0;
-    downVoteCount = 0;
 
-    handleUpVote(event){
-        this.upVoteCount++;
 
-       let subRedIdForVote = event.target.dataset.recordId;
+    handleVote(event){
+        let subRedIdForVote = event.target.dataset.recordId;
+        let recIndex = event.target.dataset.index;
 
-       const fields = {};
-       fields[UPVOTE_FIELD.fieldApiName] = this.upVoteCount;
-       fields[SUBRED_ID_FIELD.fieldApiName] = subRedIdForVote;
+        const fields = {};
+        fields[SUBRED_ID_FIELD.fieldApiName] = subRedIdForVote;
 
-       const recordInput = { fields };
+        if(event.target.name === "myUpVote"){
+            let upVoteCountVar = this.subRedditList[recIndex].No_of_Upvotes__c +1;
+            this.subRedditList[recIndex].No_of_Upvotes__c = upVoteCountVar;
+            console.log('upVoteCountVar is >> '+ upVoteCountVar);
+            fields[UPVOTE_FIELD.fieldApiName] = upVoteCountVar;
+         }
 
-       updateRecord(recordInput)
-       .then(() => {console.log('success')})
-       .catch(()=> {console.log('failed')})
+        if(event.target.name === "myDownVote"){
+            let downVoteCountVar = this.subRedditList[recIndex].No_of_Downvotes__c +1;
+            this.subRedditList[recIndex].No_of_Downvotes__c = downVoteCountVar;
+            console.log('downVoteCountVar is >> '+ downVoteCountVar);
+            fields[DOWNVOTE_FIELD.fieldApiName] = downVoteCountVar;
+        }
 
+        const recordInput = { fields };
+           updateRecord(recordInput)
+           .then(() => {console.log('update success');})
+           .catch(()=> {console.log('update rec failed')})
     }
-    handleDownVote(){
-        this.downVoteCount++;
-    }
-
-
-   }
+}

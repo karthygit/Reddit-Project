@@ -1,0 +1,12 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:isUrlAddressable" access="global" >
+	 <aura:handler name="init" value="{! this }" action="{! c.doInit }" /> 
+     <aura:handler name="change" value="{! v.pageReference}" action="{! c.reInit }" /> 
+    
+    <aura:attribute type="String" name="subRedId"/>
+    <aura:attribute type="String" name="subRedName"/>
+    
+   <c:createPost subRedIdToLWC="{!v.subRedId}" subRedNameToLWC="{!v.subRedName}"></c:createPost><br></br>
+   <br></br>
+    
+    <c:displayPosts subRedIdToLWC="{!v.subRedId}"></c:displayPosts>
+</aura:component>
